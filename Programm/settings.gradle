@@ -1,0 +1,13 @@
+include ':mysql-connector-java-8.0.26'
+include ':postgresql-42.2.24'
+include ':jtds-1.2.7'
+include ':mysql-connector-java-8.0.26'
+include ':com.mysql.jdbc.driver'
+include ':mysql-connector-java-8.0.26'
+include ':mssql-jdbc-9.4.0.jre16'
+include ':sqljdbc41'
+include ':sqljdbc42'
+include ':mssql-jdbc-9.2.1.jre11'
+include ':postgresql-42.2.24'
+include ':app'
+rootProject.name = "AutoPodkat"
