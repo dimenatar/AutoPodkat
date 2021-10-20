@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AutoPodkat</string>
+    <string name="standard_car_en">Стандартные</string>
+    <string name="economy_car_en">Эконом</string>
+    <string name="business_car_en">Бизнес</string>
+</resources>

@@ -1,15 +1,17 @@
 package com.example.autopodkat;
 
-import android.database.DatabaseUtils;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,17 +30,21 @@ import androidx.appcompat.widget.Toolbar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.*;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener
 {
-    public List<Car> carList = null;
+    private MyRecyclerViewAdapter adapter;
+    public List<Car> carList = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
     private TextView tv;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,60 +69,96 @@ public class MainActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        tv = findViewById(R.id.textView2);
-        tv.setText("test");
-        CarLoader cl = new CarLoader();
+
+       // setContentView(R.layout.business_activity);
+
         getProducts();
+        Log.e("size", "хуй");
+
+
     }
 
+
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onSupportNavigateUp()
+    {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
     private String BASE_URL = "http://192.168.0.102/getCars.php";
 
-    public void getProducts() {
+    public void getProducts()
+    {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL,
-                new Response.Listener<String>() {
+                new Response.Listener<String>()
+                {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(String response)
+                    {
 
 
                         try
                         {
-                            Log.e("predres", response);
+                            int res = getResources().getIdentifier("audi_rs7","drawable", getPackageName());
                             JSONArray array = new JSONArray(response);
-                            for (int i = 0; i < array.length(); i++) {
-
+                            carList = new ArrayList<>();
+                            for (int i = 0; i < array.length(); i++)
+                            {
+                                Log.e("error","cikl");
                                 JSONObject object = array.getJSONObject(i);
+                                Log.e("here","?");
+                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"),BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume")));
 
-                                String mark = object.getString("carmark");
-                                String model = object.getString("carmodel");
-                                Log.e("res", mark);
                             }
-
-                        } catch (Exception e) {
+                            FillAdapter(MainActivity.this);
+                            for (int i = 0; i < carList.size(); i++)
+                            {
+                                carList.get(i).Print();
+                            }
+                        }
+                        catch (Exception e)
+                        {
                             Log.e("err", e.getMessage());
                         }
-
-
                     }
+
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
         });
+
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+    }
+    void FillAdapter(Context context)
+    {
+        // set up the RecyclerView
+
+        RecyclerView recyclerView = findViewById(R.id.RecyclerCar);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManager);
+
+        adapter = new MyRecyclerViewAdapter(MainActivity.this, carList);
+
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(View view, int position)
+    {
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
     }
 }
