@@ -34,18 +34,35 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener
 {
     private MyRecyclerViewAdapter adapter;
-    public List<Car> carList = new ArrayList<>();
+    private String request = "select carmark, carmodel, descr, bodytype, transmissiontype, photo, hp, volume from cars";
+    String BASE_URL = "http://192.168.0.102/getCars.php";
+    public static List<Car> carList = new ArrayList<>();
     public List<Car> StandardCarList = new ArrayList<>();
     public List<Car> EconomCarList = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
     private TextView tv;
-    private String request = "select carmark, carmodel, descr, bodytype, transmissiontype, photo, hp, volume from cars";
-    String BASE_URL = "http://192.168.0.102/getCars.php";
+    public static IGetCars get;
+    public static IFillAdapter fill;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        get = new IGetCars()
+        {
+            @Override
+            public void get(Context context, List<Car> listCar, String request)
+            {
+                getCars(context, listCar, request);
+            }
+        };
+        fill = new IFillAdapter() {
+            @Override
+            public void Fill(Context context, List<Car> carList) {
+                FillAdapter(context, carList);
+            }
+        };
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -70,11 +87,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         NavigationUI.setupWithNavController(navigationView, navController);
 
        // setContentView(R.layout.business_activity);
-        getCars();
+
+        get.get(MainActivity.this, carList, "select carmark, carmodel, descr, bodytype, transmissiontype, photo, hp, volume from cars");
     }
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -92,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
 
 
-    public void getCars()
+    public void getCars(Context context, List<Car> listCar, String request)
     {
         RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
 
@@ -109,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             for (int i = 0; i < array.length(); i++)
                             {
                                 JSONObject object = array.getJSONObject(i);
-                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"),BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume")));
+                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume")));
                             }
-                            FillAdapter(MainActivity.this, carList);
+                            FillAdapter(context, carList);
                             for (int i = 0; i < carList.size(); i++)
                             {
                                 carList.get(i).Print();
@@ -125,15 +140,15 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
                 },
                 new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-            }
+                    }
 
-        })
+                })
         {
             @Override
-            protected Map<String, String>getParams() throws AuthFailureError
+            protected Map<String, String> getParams() throws AuthFailureError
             {
                 Map<String, String> params = new HashMap<>();
                 params.put("query", request);
@@ -146,12 +161,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     void FillAdapter(Context context, List<Car> carList)
     {
         // set up the RecyclerView
-
+        Log.e("here","??");
         RecyclerView recyclerView = findViewById(R.id.RecyclerCarBusiness);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
-        adapter = new MyRecyclerViewAdapter(MainActivity.this, carList);
+        adapter = new MyRecyclerViewAdapter(context, carList);
 
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);

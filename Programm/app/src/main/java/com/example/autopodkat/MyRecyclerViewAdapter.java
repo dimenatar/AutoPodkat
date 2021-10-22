@@ -19,7 +19,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(Context context, List<Car> carList)
+    public MyRecyclerViewAdapter(Context context, List<Car> carList)
     {
         this.mInflater = LayoutInflater.from(context);
         this.carList = carList;

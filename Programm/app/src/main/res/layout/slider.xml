@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/slider"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:gravity="bottom"
+        tools:context=".ui.home.HomeActivity"
+        app:umanoPanelHeight="60dp"
+        app:umanoShadowHeight="20dp"
+>
+<RelativeLayout android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/sampleText"
+                  android:text="sample"
+        />
+
+</RelativeLayout>
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:id="@+id/sampleext"
+                          android:text="sample"
+                />
+
+        </RelativeLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
