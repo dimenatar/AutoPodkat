@@ -34,7 +34,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener
 {
     private MyRecyclerViewAdapter adapter;
-    private String request = "select carmark, carmodel, descr, bodytype, transmissiontype, photo, hp, volume from cars";
+    private String request = "select cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
     String BASE_URL = "http://192.168.0.102/getCars.php";
     public static List<Car> carList = new ArrayList<>();
     public List<Car> StandardCarList = new ArrayList<>();
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
        // setContentView(R.layout.business_activity);
 
-        get.get(MainActivity.this, carList, "select carmark, carmodel, descr, bodytype, transmissiontype, photo, hp, volume from cars");
+        get.get(MainActivity.this, carList, request);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             for (int i = 0; i < array.length(); i++)
                             {
                                 JSONObject object = array.getJSONObject(i);
-                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume")));
+                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume"),  new Location(object.getDouble("longitude"), object.getDouble("latitude")),object.getString("tariff")));
                             }
                             FillAdapter(context, carList);
                             for (int i = 0; i < carList.size(); i++)
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                         }
                         catch (Exception e)
                         {
-                            Log.e("err", e.getMessage());
+                            Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
                         }
                     }
 

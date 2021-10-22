@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class Car
 {
-    public Car(String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume)
+    public Car(String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume, Location location, String tariff)
     {
         CarMark = carMar;
         CarModel = carModel;
@@ -15,6 +15,8 @@ public class Car
         Photo = photo;
         HP = hp;
         Volume = volume;
+        this.Location = location;
+        Tariff = tariff;
     }
     public String CarMark;
     public String CarModel;
@@ -24,6 +26,8 @@ public class Car
     public Bitmap Photo;
     public int HP;
     public double Volume;
+    public Location Location;
+    public String Tariff;
     public void Print()
     {
         Log.e("out", "CarMark: " + CarMark + " ,CarModel; " + CarModel + "Description: " + Description +"BodyType: " + BodyType + "TransmissionType: " + TransmissionType);

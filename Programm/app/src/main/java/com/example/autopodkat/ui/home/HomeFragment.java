@@ -38,6 +38,8 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         FillAdapter(getContext(), MainActivity.carList, root);
 
+
+
         return root;
     }
     void FillAdapter(Context context, List<Car> carList, View view)

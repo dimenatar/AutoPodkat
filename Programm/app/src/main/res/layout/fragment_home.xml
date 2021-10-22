@@ -1,53 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
-    <TextView
-            android:text="@string/business_car_en"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/business_car_text"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintVertical_bias="0.022" app:layout_constraintHorizontal_bias="0.496"/>
-    <TextView
-
-            android:text="@string/economy_car_en"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:id="@+id/economy_car_text"
-
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintVertical_bias="0.738" app:layout_constraintHorizontal_bias="0.498"/>
-    <TextView
-            android:text="@string/standard_car_en"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/standard_car_text"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintVertical_bias="0.406" app:layout_constraintHorizontal_bias="0.498"/>
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerCarBusiness"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        app:umanoPanelHeight="60dp"
+        app:umanoShadowHeight="20dp"
+        tools:context=".ui.home.HomeFragment"
+        app:umanoDragView="@id/rl2">
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-    />
-<include
-    layout="@layout/slider"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+            android:id="@+id/rlayout">
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerCarBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        />
+    </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/rl2">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|center_horizontal">
+            <TextView
+                  android:layout_width="wrap_content"
+                  android:textSize="12sp"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/FilterText"
+                  android:layout_gravity="top|center_horizontal"
+                  android:text="Filters"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:orientation="horizontal">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tariffIDButton"
+                    android:text="tariff"/>
+        </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ClearFilters"
+                        android:text="Clear"
+                        android:layout_gravity="bottom|start"/>
+                <Button
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1"
+                        app:layout_constraintHorizontal_bias="0.9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ApllyButton"
+                        android:layout_gravity="bottom|end"
+                        android:text="Apply"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

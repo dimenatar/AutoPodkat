@@ -17,7 +17,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<Car> carList;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-
     // data is passed into the constructor
     public MyRecyclerViewAdapter(Context context, List<Car> carList)
     {
@@ -44,6 +43,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         holder.carImage.setImageBitmap(car.Photo);
         holder.carMarkText.setText(car.CarMark);
         holder.carModelText.setText(car.CarModel);
+        holder.carTariff.setText(holder.carTariff.getText() + car.Tariff);
     }
 
     // total number of rows
@@ -56,7 +56,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         ImageView carImage;
-        TextView carMarkText, carModelText;
+        TextView carMarkText, carModelText, carTariff;
 
 
         ViewHolder(View itemView)
@@ -66,6 +66,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             carImage = itemView.findViewById(R.id.carImage);
             carMarkText = itemView.findViewById(R.id.carMark);
             carModelText = itemView.findViewById(R.id.carModel);
+            carTariff = itemView.findViewById(R.id.tariffMode);
             itemView.setOnClickListener(this);
         }
 
