@@ -1,8 +1,6 @@
 package com.example.autopodkat;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = mInflater.inflate(R.layout.recyclerview_item_business, parent, false);
+        View view;
+        view = mInflater.inflate(R.layout.recyclerview_car, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,8 +44,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         holder.carImage.setImageBitmap(car.Photo);
         holder.carMarkText.setText(car.CarMark);
         holder.carModelText.setText(car.CarModel);
-        holder.carBodyTypeText.setText(holder.carBodyTypeText.getText()+car.BodyType);
-        holder.carTransmissionTypeText.setText(holder.carTransmissionTypeText.getText()+car.TransmissionType);
     }
 
     // total number of rows
@@ -59,7 +56,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         ImageView carImage;
-        TextView carMarkText, carModelText, carBodyTypeText, carTransmissionTypeText;
+        TextView carMarkText, carModelText;
 
 
         ViewHolder(View itemView)
@@ -69,8 +66,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             carImage = itemView.findViewById(R.id.carImage);
             carMarkText = itemView.findViewById(R.id.carMark);
             carModelText = itemView.findViewById(R.id.carModel);
-            carBodyTypeText = itemView.findViewById(R.id.carBodyTypeText);
-            carTransmissionTypeText = itemView.findViewById(R.id.carTransmissionType);
             itemView.setOnClickListener(this);
         }
 
