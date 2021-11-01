@@ -1,18 +1,20 @@
 package com.example.autopodkat;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.autopodkat.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -26,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,36 +36,46 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener
 {
-    private MyRecyclerViewAdapter adapter;
-    private String request = "select cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
+    public static Bitmap saveBitmap;
+
+
+    Button tariff, clearButton, transmissionTypeButton;
+    Context context;
+    private MyRecyclerViewAdapter carAdapter;
+
+    private String carRequest = "select cars.carid,cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
+    private String orderRequest = "select userid, carid, startdate, enddate, amounthoures from orders ";
     String BASE_URL = "http://192.168.0.102/getCars.php";
     public static List<Car> carList = new ArrayList<>();
-    public List<Car> StandardCarList = new ArrayList<>();
-    public List<Car> EconomCarList = new ArrayList<>();
+    public static List<Order> orderList = new ArrayList<>();
     private AppBarConfiguration mAppBarConfiguration;
-    private TextView tv;
     public static IGetCars get;
     public static IFillAdapter fill;
+    public static IGetOrders getOrders;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        context = getBaseContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         get = new IGetCars()
         {
             @Override
-            public void get(Context context, List<Car> listCar, String request)
+            public void get( List<Car> listCar, String request)
             {
-                getCars(context, listCar, request);
+                getCars(context, request);
             }
         };
-        fill = new IFillAdapter() {
+        fill = new IFillAdapter()
+        {
             @Override
-            public void Fill(Context context, List<Car> carList) {
-                FillAdapter(context, carList);
+            public void Fill(Context context, List<Car> carList)
+            {
+                FillCarAdapter(context, carList);
             }
         };
-
+        getOrders = (request) -> GetOrders(request);
+        getOrders.get_orders( orderRequest);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -88,7 +101,33 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
        // setContentView(R.layout.business_activity);
 
-        get.get(MainActivity.this, carList, request);
+        get.get(carList, carRequest);
+
+        tariff = findViewById(R.id.tariffIDButton);
+        tariff.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                HomeFragment.showDialog.showDialog(new String[]{"all","business","standard","economy"}, 1);
+            }
+        });
+        clearButton = findViewById(R.id.ClearFilters);
+        clearButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+        transmissionTypeButton = findViewById(R.id.transmissionButton);
+        transmissionTypeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeFragment.showDialog.showDialog(new String[]{"all","mechanical","automatic"}, 2);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -107,10 +146,10 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
 
 
-    public void getCars(Context context, List<Car> listCar, String request)
+    public void getCars(Context context, String request)
     {
-        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
 
+        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, BASE_URL,
                 new Response.Listener<String>()
                 {
@@ -124,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             for (int i = 0; i < array.length(); i++)
                             {
                                 JSONObject object = array.getJSONObject(i);
-                                carList.add(new Car(object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume"),  new Location(object.getDouble("longitude"), object.getDouble("latitude")),object.getString("tariff")));
+                                carList.add(new Car(object.getInt("carid"),object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume"),  new Location(object.getDouble("longitude"), object.getDouble("latitude")),object.getString("tariff")));
                             }
-                            FillAdapter(context, carList);
+                            FillCarAdapter(context, carList);
                             for (int i = 0; i < carList.size(); i++)
                             {
                                 carList.get(i).Print();
@@ -155,26 +194,68 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 return params;
             }
         };
-
         Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
     }
-    void FillAdapter(Context context, List<Car> carList)
+    public void GetOrders(String request)
+    {
+
+        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, "http://192.168.0.102/getOrders.php",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        try
+                        {
+                            JSONArray array = new JSONArray(response);
+                            orderList = new ArrayList<>();
+                            Log.e("resp",response);
+                            for (int i = 0; i < array.length(); i++)
+                            {
+                                JSONObject object = array.getJSONObject(i);
+                                orderList.add(new Order(object.getInt("UserID"),object.getInt("CarID"), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("StartDate")),new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("EndDate")),object.getInt("UserID")));
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError
+            {
+                Map<String, String> params = new HashMap<>();
+                params.put("query", request);
+                return params;
+            }
+        };
+        Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
+    }
+    void FillCarAdapter(Context context, List<Car> carList)
     {
         // set up the RecyclerView
-        Log.e("here","??");
         RecyclerView recyclerView = findViewById(R.id.RecyclerCarBusiness);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-
-        adapter = new MyRecyclerViewAdapter(context, carList);
-
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+        carAdapter = new MyRecyclerViewAdapter(context, carList);
+        carAdapter.setClickListener(this);
+        recyclerView.setAdapter(carAdapter);
     }
 
     @Override
-    public void onItemClick(View view, int position)
-    {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, "You clicked " + carAdapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
     }
 }

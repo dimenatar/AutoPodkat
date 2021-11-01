@@ -5,8 +5,9 @@ import android.util.Log;
 
 public class Car
 {
-    public Car(String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume, Location location, String tariff)
+    public Car(int carID, String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume, Location location, String tariff)
     {
+        CarID = carID;
         CarMark = carMar;
         CarModel = carModel;
         Description = description;
@@ -18,6 +19,7 @@ public class Car
         this.Location = location;
         Tariff = tariff;
     }
+    public int CarID;
     public String CarMark;
     public String CarModel;
     public String Description;

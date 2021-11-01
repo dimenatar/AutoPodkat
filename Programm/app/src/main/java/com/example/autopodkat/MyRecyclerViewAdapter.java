@@ -1,6 +1,8 @@
 package com.example.autopodkat;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<Car> carList;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context mContext;
     // data is passed into the constructor
     public MyRecyclerViewAdapter(Context context, List<Car> carList)
     {
         this.mInflater = LayoutInflater.from(context);
         this.carList = carList;
+        mContext = context;
     }
 
     // inflates the row layout from xml when needed
@@ -57,8 +61,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     {
         ImageView carImage;
         TextView carMarkText, carModelText, carTariff;
-
-
         ViewHolder(View itemView)
         {
 
@@ -71,8 +73,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
 
         @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        public void onClick(View view)
+        {
+            if (mClickListener != null)
+
+                mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
@@ -82,8 +87,34 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+    public void setClickListener(ItemClickListener itemClickListener)
+    {
+        this.mClickListener = new ItemClickListener()
+        {
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                Log.e("click","click");
+                Car car = getItem(position);
+                Intent intent = new Intent(mContext, DetailerCarActivity.class);
+                MainActivity.saveBitmap = car.Photo;
+                intent.putExtra("carID", car.CarID);
+                intent.putExtra("carMark", car.CarMark);
+                intent.putExtra("carModel", car.CarModel);
+                intent.putExtra("Description", car.Description);
+                intent.putExtra("BodyType", car.BodyType);
+                intent.putExtra("TransmissionType", car.TransmissionType);
+                intent.putExtra("HP", car.HP);
+                intent.putExtra("Volume", car.Volume);
+                intent.putExtra("Location", new double[]{car.Location.Longitude,car.Location.Latitude});
+                intent.putExtra("Tariff", car.Tariff);
+
+
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        };
     }
 
     // parent activity will implement this method to respond to click events

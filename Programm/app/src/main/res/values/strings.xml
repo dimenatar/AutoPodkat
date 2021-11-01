@@ -14,5 +14,8 @@
     <string name="business_car_en">Business</string>
     <string name="economy_car_en">Economy</string>
     <string name="standard_car_en">Standard</string>
-
+    <string name="google_maps_api_key" translatable="false">AIzaSyDGCh8gwsFfAheslv1rrziSBcI7rZE8kOM</string>
+    <string name="start_ride">Chose start ride date:</string>
+    <string name="end_ride">Chose end ride date:</string>
+    <string name="take">Take</string>
 </resources>

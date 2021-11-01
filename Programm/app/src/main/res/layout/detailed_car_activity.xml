@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/appBarLayout">
+
+    </com.google.android.material.appbar.AppBarLayout>
+    <ImageView
+            android:layout_width="280dp"
+            android:layout_height="160dp"
+            android:id="@+id/detailed_car_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.098"/>
+    <TextView
+            android:text="hp:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/detailed_car_hp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp" app:layout_constraintTop_toBottomOf="@+id/detailed_car_image"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.806"
+            app:layout_constraintVertical_bias="0.101" android:textSize="18sp"/>
+    <TextView
+            android:text="body type:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/detailed_car_body"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/take_car_button"
+            app:layout_constraintBottom_toTopOf="@+id/carPosition" app:layout_constraintVertical_bias="0.27"/>
+    <TextView
+            android:text="transmission:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/detailed_car_transmission_type"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="36dp" app:layout_constraintTop_toBottomOf="@+id/detailed_car_image"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.052"
+            app:layout_constraintVertical_bias="0.197" android:textSize="18sp"/>
+    <TextView
+            android:text="volume:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/detailed_car_volume"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.896"
+            android:textSize="18sp"
+            android:layout_marginTop="75dp" app:layout_constraintTop_toBottomOf="@+id/take_car_button"
+            app:layout_constraintBottom_toTopOf="@+id/carPosition" app:layout_constraintVertical_bias="0.0"/>
+    <androidx.appcompat.widget.Toolbar
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:titleTextColor="@color/white"
+            android:background="@color/purple_200"
+            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text=""
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp" android:id="@+id/detailed_descr"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/detailed_car_hp"
+            app:layout_constraintVertical_bias="0.924" app:layout_constraintHorizontal_bias="0.0"/>
+    <com.google.android.gms.maps.MapView
+            android:layout_width="fill_parent"
+            android:layout_height="150dp" android:id="@+id/carPosition"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailed_car_hp"
+            app:layout_constraintBottom_toTopOf="@+id/detailed_descr"/>
+    <Button
+            android:text="take"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/take_car_button"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/carPosition"
+            app:layout_constraintTop_toBottomOf="@+id/detailed_car_image" app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintVertical_bias="0.029"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

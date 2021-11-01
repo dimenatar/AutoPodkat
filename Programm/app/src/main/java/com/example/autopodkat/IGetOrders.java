@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-public interface IGetCars
+public interface IGetOrders
 {
-    void get(List<Car> listCar, String request);
+    void get_orders(String request);
 }
