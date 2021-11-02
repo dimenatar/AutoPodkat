@@ -3,6 +3,8 @@ package com.example.autopodkat;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -148,100 +150,105 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
     public void getCars(Context context, String request)
     {
-
-        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, BASE_URL,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        try
-                        {
-                            JSONArray array = new JSONArray(response);
-                            carList = new ArrayList<>();
-                            for (int i = 0; i < array.length(); i++)
-                            {
-                                JSONObject object = array.getJSONObject(i);
-                                carList.add(new Car(object.getInt("carid"),object.getString("carmark"), object.getString("carmodel"),object.getString("descr"),object.getString("bodytype"),object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(object.getString("photo"),"drawable", getPackageName()) ),object.getInt("hp"),object.getDouble("volume"),  new Location(object.getDouble("longitude"), object.getDouble("latitude")),object.getString("tariff")));
-                            }
-                            FillCarAdapter(context, carList);
-                            for (int i = 0; i < carList.size(); i++)
-                            {
-                                carList.get(i).Print();
+        if (isConnected(MainActivity.this)) {
+            RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
+            StringRequest stringRequest1 = new StringRequest(Request.Method.POST, BASE_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                carList = new ArrayList<>();
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject object = array.getJSONObject(i);
+                                    carList.add(new Car(object.getInt("carid"), object.getString("carmark"), object.getString("carmodel"), object.getString("descr"), object.getString("bodytype"), object.getString("transmissiontype"), BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(object.getString("photo"), "drawable", getPackageName())), object.getInt("hp"), object.getDouble("volume"), new Location(object.getDouble("longitude"), object.getDouble("latitude")), object.getString("tariff")));
+                                }
+                                FillCarAdapter(context, carList);
+                                SaveManager.SaveCars(carList, context);
+                                for (int i = 0; i < carList.size(); i++) {
+                                    carList.get(i).Print();
+                                }
+                            } catch (Exception e) {
+                                Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
                             }
                         }
-                        catch (Exception e)
+
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error)
                         {
-                            Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
+                            Toast.makeText(MainActivity.this, "Unable connect to server. Loading saved data...", Toast.LENGTH_LONG).show();
                         }
-                    }
 
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-
-                })
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("query", request);
+                    return params;
+                }
+            };
+            Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
+        }
+        else
         {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError
+            List<Car> tempList = SaveManager.LoadCars();
+            if (tempList != null)
             {
-                Map<String, String> params = new HashMap<>();
-                params.put("query", request);
-                return params;
+                FillCarAdapter(MainActivity.this, tempList);
             }
-        };
-        Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
+            else
+            {
+                Toast.makeText(this, "Nothing is saved", Toast.LENGTH_LONG).show();
+            }
+        }
     }
     public void GetOrders(String request)
     {
-
-        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, "http://192.168.0.102/getOrders.php",
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        try
-                        {
-                            JSONArray array = new JSONArray(response);
-                            orderList = new ArrayList<>();
-                            Log.e("resp",response);
-                            for (int i = 0; i < array.length(); i++)
-                            {
-                                JSONObject object = array.getJSONObject(i);
-                                orderList.add(new Order(object.getInt("UserID"),object.getInt("CarID"), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("StartDate")),new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("EndDate")),object.getInt("UserID")));
-                            }
-
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
-                        }
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-
-                })
+        if (isConnected(MainActivity.this))
         {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError
-            {
-                Map<String, String> params = new HashMap<>();
-                params.put("query", request);
-                return params;
-            }
-        };
-        Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
+            RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.this);
+            StringRequest stringRequest1 = new StringRequest(Request.Method.POST, "http://192.168.0.102/getOrders.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                orderList = new ArrayList<>();
+                                Log.e("resp", response);
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject object = array.getJSONObject(i);
+                                    orderList.add(new Order(object.getInt("UserID"), object.getInt("CarID"), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("StartDate")), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("EndDate")), object.getInt("UserID")));
+                                }
+
+                            } catch (Exception e) {
+                                Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
+                            }
+                        }
+
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("query", request);
+                    return params;
+                }
+            };
+            Volley.newRequestQueue(MainActivity.this).add(stringRequest1);
+        }
+        else
+        {
+            // do warning
+            // load from saved
+        }
     }
     void FillCarAdapter(Context context, List<Car> carList)
     {
@@ -258,4 +265,20 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + carAdapter.getItem(position) + " on item position " + position, Toast.LENGTH_SHORT).show();
     }
+    public static boolean isConnected(Context context)
+    {
+        boolean connected = false;
+        try
+        {
+            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            return connected;
+        } catch (Exception e)
+        {
+            Log.e("Connectivity Exception", e.getMessage());
+        }
+        return connected;
+    }
+
 }

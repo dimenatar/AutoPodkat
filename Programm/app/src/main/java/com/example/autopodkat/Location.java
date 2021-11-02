@@ -1,6 +1,8 @@
 package com.example.autopodkat;
 
-public class Location
+import java.io.Serializable;
+
+public class Location implements Serializable
 {
     public double Latitude;
     public double Longitude;

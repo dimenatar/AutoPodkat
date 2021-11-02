@@ -3,7 +3,9 @@ package com.example.autopodkat;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-public class Car
+import java.io.Serializable;
+
+public class Car implements Serializable
 {
     public Car(int carID, String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume, Location location, String tariff)
     {
