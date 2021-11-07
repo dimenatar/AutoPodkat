@@ -35,6 +35,14 @@
                   android:label="@string/app_name"
                   android:theme="@style/Theme.AutoPodkat.NoActionBar"
         />
+        <activity android:name=".AuthorisationActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/Theme.AutoPodkat.NoActionBar"
+        />
+        <activity android:name=".RegistrationActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/Theme.AutoPodkat.NoActionBar"
+        />
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_api_key"/>

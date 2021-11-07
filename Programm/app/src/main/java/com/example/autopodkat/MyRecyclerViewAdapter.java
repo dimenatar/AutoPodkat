@@ -44,7 +44,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     {
 
         Car car = carList.get(position);
-        holder.carImage.setImageBitmap(car.Photo);
+        holder.carImage.setImageBitmap(car.Photo.currentImage);
         holder.carMarkText.setText(car.CarMark);
         holder.carModelText.setText(car.CarModel);
         holder.carTariff.setText(holder.carTariff.getText() + car.Tariff);
@@ -97,7 +97,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 Log.e("click","click");
                 Car car = getItem(position);
                 Intent intent = new Intent(mContext, DetailerCarActivity.class);
-                MainActivity.saveBitmap = car.Photo;
+                MainActivity.saveBitmap = car.Photo.currentImage;
                 intent.putExtra("carID", car.CarID);
                 intent.putExtra("carMark", car.CarMark);
                 intent.putExtra("carModel", car.CarModel);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Car implements Serializable
 {
-    public Car(int carID, String carMar,String carModel, String description, String bodyType, String transmissionType, Bitmap photo, int hp, double volume, Location location, String tariff)
+    public Car(int carID, String carMar,String carModel, String description, String bodyType, String transmissionType, BitmapDataObject photo, int hp, double volume, Location location, String tariff)
     {
         CarID = carID;
         CarMark = carMar;
@@ -27,7 +27,7 @@ public class Car implements Serializable
     public String Description;
     public String BodyType;
     public String TransmissionType;
-    public Bitmap Photo;
+    public BitmapDataObject Photo;
     public int HP;
     public double Volume;
     public Location Location;

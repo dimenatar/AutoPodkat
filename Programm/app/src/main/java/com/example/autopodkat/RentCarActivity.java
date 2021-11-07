@@ -96,11 +96,11 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
             @Override
             public void onClick(View v)
             {
-                if (startDate.compareTo(endDate) <0 && newCarLocation.Latitude != 420 && newCarLocation.Longitude != 420)
+                if (startDate.compareTo(endDate) <0 && newCarLocation.Latitude != 420 && newCarLocation.Longitude != 420 && MainActivity.user != null)
                 {
-                    CreateOrder("default","1",String.valueOf(CarID),startDate, endDate, TimeUnit.DAYS.convert(endDate.getTime()-startDate.getTime(), TimeUnit.MILLISECONDS));
+                    CreateOrder("default",String.valueOf(MainActivity.user.UserID),String.valueOf(CarID),startDate, endDate, TimeUnit.DAYS.convert(endDate.getTime()-startDate.getTime(), TimeUnit.MILLISECONDS));
                     Toast.makeText(RentCarActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                    MainActivity.getOrders.get_orders("select userid, carid, startdate, enddate, amounthoures from orders");
+                    MainActivity.getOrders.get_orders("select userid, carid, startdate, enddate, amounthoures from orders where UserID = " + MainActivity.user.UserID);
                 }
                 else if (newCarLocation.Longitude == 420 && newCarLocation.Latitude==420)
                 {
@@ -110,6 +110,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                 {
                     Toast.makeText(RentCarActivity.this, "start date must be earlier then end date!", Toast.LENGTH_LONG).show();
                 }
+                else if (MainActivity.user == null) Toast.makeText(RentCarActivity.this, "you need to loge in", Toast.LENGTH_LONG).show();
             }
         });
         Intent intent = getIntent();

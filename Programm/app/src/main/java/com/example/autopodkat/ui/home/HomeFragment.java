@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
                 ShowDialog(items, button);
             }
         };
-
+        Log.e("created","123");
         return root;
     }
     void FillAdapter(Context context, List<Car> carList, View view)

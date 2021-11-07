@@ -48,6 +48,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.2.0-alpha01"
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    compile 'com.android.support:design:24.0.0'
     implementation ('com.sothree.slidinguppanel:library:3.3.1' ) {
         exclude module: 'support-v4'
     }

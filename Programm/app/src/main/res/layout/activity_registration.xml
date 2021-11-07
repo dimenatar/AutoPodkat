@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:id="@+id/reg_appBar">
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/reg_toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:titleTextColor="@color/white"
+            android:background="@color/purple_200"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp"
+            android:layout_height="wrap_content">
+
+    <EditText
+            android:layout_marginTop="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:hint="User name"
+            android:inputType="textPersonName"
+            android:backgroundTint="@color/red"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/UserNameEdit"/>
+
+        <EditText
+                android:layout_marginTop="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLength="20"
+                android:inputType="textPassword"
+                android:text=""
+                android:hint="Password"
+                android:backgroundTint="@color/red"
+                android:ems="10"
+                android:id="@+id/PassEdit"/>
+
+    <EditText
+            android:layout_marginTop="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:hint="Passport"
+            android:backgroundTint="@color/red"
+            android:id="@+id/PassportEdit"/>
+
+        <EditText
+                android:layout_marginTop="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="13"
+            android:inputType="phone"
+            android:digits="+() 1234567890-"
+            android:text="+375 "
+                android:hint="Telephone"
+                android:backgroundTint="@color/red"
+            android:ems="10"
+            android:id="@+id/TelephoneEdit"/>
+
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="@string/confirm"
+            android:id="@+id/Confirm_reg_button"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
