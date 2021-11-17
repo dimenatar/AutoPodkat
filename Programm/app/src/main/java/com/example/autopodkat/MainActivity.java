@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.*;
@@ -45,12 +48,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     public static Bitmap saveBitmap;
     private TextView userNameHeader;
     private MenuItem logMenuItem;
-    Button tariff, clearButton, transmissionTypeButton;
+    Button tariff, transmissionTypeButton;
     Context context;
     private MyRecyclerViewAdapter carAdapter;
     public static User user = null;
     private String carRequest = "select cars.carid,cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
-    private String orderRequest = "select userid, carid, startdate, enddate, amounthoures from orders ";
+    private String orderRequest = "select userid, carid, startdate, enddate, amounthoures,totalprice from orders";
     String BASE_URL = "http://192.168.0.102/getCars.php";
     public static List<Car> carList = new ArrayList<>();
     public static List<Order> orderList = new ArrayList<>();
@@ -81,21 +84,17 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 FillCarAdapter(context, carList);
             }
         };
-        getOrders = (request) -> GetOrders(request);
-        if (MainActivity.user != null)
-        getOrders.get_orders( orderRequest+" where UserID = " + MainActivity.user.UserID);
+        getOrders = new IGetOrders() {
+            @Override
+            public void get_orders(String request) {
+                GetOrders(request);
+            }
+        };
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "a", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         userNameHeader=navigationView.getHeaderView(0).findViewById(R.id.userName_header);
@@ -122,15 +121,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 HomeFragment.showDialog.showDialog(new String[]{"all","business","standard","economy"}, 1);
             }
         });
-        clearButton = findViewById(R.id.ClearFilters);
-        clearButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
 
-            }
-        });
         transmissionTypeButton = findViewById(R.id.transmissionButton);
         transmissionTypeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +145,10 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 userNameHeader.setText(text);
             }
         };
-
+        if (MainActivity.user != null) {
+            getOrders.get_orders(orderRequest + " where UserID = " + MainActivity.user.UserID);
+            Log.e("get","orders");
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -223,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                         @Override
                         public void onResponse(String response) {
                             try {
+                                Log.e("carresponse", response);
                                 JSONArray array = new JSONArray(response);
                                 carList = new ArrayList<>();
                                 for (int i = 0; i < array.length(); i++) {
@@ -283,17 +278,18 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                             @Override
                             public void onResponse(String response) {
                                 try {
+                                    Log.e("orderResponse", response);
                                     JSONArray array = new JSONArray(response);
                                     orderList = new ArrayList<>();
-                                    Log.e("resp", response);
+
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject object = array.getJSONObject(i);
-                                        orderList.add(new Order(object.getInt("UserID"), object.getInt("CarID"), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("StartDate")), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("EndDate")), object.getInt("AmountHoures"), object.getInt("TotalPrice")));
+                                        orderList.add(new Order(object.getInt("UserID"), object.getInt("CarID"), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("StartDate")), new SimpleDateFormat("yyyy-MM-dd").parse(object.getString("EndDate")), object.getInt("AmountHoures"), (float) object.getDouble("TotalPrice")));
                                     }
                                     saveOrdersThread thread = new saveOrdersThread(context);
                                     thread.start();
                                 } catch (Exception e) {
-                                    Log.e("err", e.getMessage() + "  " + e.getLocalizedMessage());
+                                    Log.e("errH", e.getMessage() + "  " + e.getLocalizedMessage());
                                 }
                             }
 

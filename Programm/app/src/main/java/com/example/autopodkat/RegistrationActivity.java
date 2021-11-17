@@ -119,10 +119,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (telephone.getText().toString().length() == 13)
                 {
                     colorStateList = ColorStateList.valueOf(Color.GREEN);
+                    isTelephoneCorrect = true;
                 }
                 else
                 {
                     colorStateList = ColorStateList.valueOf(Color.RED);
+                    isTelephoneCorrect = false;
                 }
                 telephone.setBackgroundTintList(colorStateList);
             }
@@ -137,10 +139,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (telephone.getText().toString().length() == 13)
                 {
                     colorStateList = ColorStateList.valueOf(Color.GREEN);
+                    isTelephoneCorrect = true;
                 }
                 else
                 {
                     colorStateList = ColorStateList.valueOf(Color.RED);
+                    isTelephoneCorrect = false;
                 }
                 telephone.setBackgroundTintList(colorStateList);
             }
@@ -150,8 +154,9 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                if (isPassCorrect && isPassportCorrect  && isUserCorrect && isTelephoneCorrect)
                 createUser(userName.getText().toString(), pass.getText().toString(), passport.getText().toString(), telephone.getText().toString());
-                Toast.makeText(RegistrationActivity.this, "success", Toast.LENGTH_LONG).show();
+                else Toast.makeText(RegistrationActivity.this, "Insert correct information:(", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,7 +166,8 @@ public class RegistrationActivity extends AppCompatActivity {
         return true;
     }
     private EditText CheckCorrectness(EditText text, int number) {
-        if (text.getText().toString().length() >= 4) {
+        if (text.getText().toString().length() >= 4)
+        {
             colorStateList = ColorStateList.valueOf(Color.GREEN);
             text.setBackgroundTintList(colorStateList);
             switch (number) {
@@ -214,6 +220,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         MainActivity.user = new User(jsonObject.getInt("UserID"), userName, pass, passport, telephone);
                         SaveManager.SaveAcc(MainActivity.user, getApplicationContext());
                         MainActivity.iSetName.SetName(MainActivity.user.UserName, true);
+                        finish();
                     }
                     Toast.makeText(RegistrationActivity.this,message,Toast.LENGTH_SHORT).show();
 
@@ -228,7 +235,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(RegistrationActivity.this,error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this,"Unable connect to server", Toast.LENGTH_LONG).show();
             }
         })
         {
@@ -240,7 +247,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 params.put("userName",userName);
                 params.put("pass",pass);
                 params.put("passport",passport);
-                params.put("telephone",telephone);
+                params.put("telephone",telephone.trim());
 
                 return params;
             }

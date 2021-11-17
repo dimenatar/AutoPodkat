@@ -120,20 +120,21 @@ public class AuthorisationActivity extends AppCompatActivity
 
         if (text.getText().toString() != "")
         {
-            text.setHighlightColor(Color.GREEN);
+            colorStateList = ColorStateList.valueOf(Color.GREEN);
+            text.setBackgroundTintList(colorStateList);
             isCorrectFirst = true;
             if (number == 1) isCorrectFirst = true;
             else isCorrectSecond = true;
-            return text;
         }
         else
         {
-            text.setHighlightColor(Color.RED);
+            colorStateList = ColorStateList.valueOf(Color.RED);
+            text.setBackgroundTintList(colorStateList);
             if (number == 1) isCorrectFirst = false;
             else isCorrectSecond = false;
             isCorrectFirst = false;
-            return text;
         }
+        return text;
     }
 
     private void signIn( final String userName, final String password) {
@@ -191,5 +192,4 @@ public class AuthorisationActivity extends AppCompatActivity
         mStringRequest.setShouldCache(false);
         mRequestQueue.add(mStringRequest);
     }
-
 }

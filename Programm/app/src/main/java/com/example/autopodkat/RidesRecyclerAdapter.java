@@ -55,7 +55,7 @@ public class RidesRecyclerAdapter extends RecyclerView.Adapter<RidesRecyclerAdap
                 car = MainActivity.carList.get(i);
             }
         }
-        
+        Log.e("here","hrer");
         holder.carMark.setText(car.CarMark + " " + car.CarModel);
         holder.startDate.setText(new SimpleDateFormat("dd-MM").format(order.StartDate));
         holder.endDate.setText(new SimpleDateFormat("dd-MM").format(order.EndDate));

@@ -107,11 +107,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 intent.putExtra("HP", car.HP);
                 intent.putExtra("Volume", car.Volume);
                 intent.putExtra("Location", new double[]{car.Location.Longitude,car.Location.Latitude});
-                intent.putExtra("Tariff", car.Tariff);
+                intent.putExtra("carTariff", car.Tariff);
 
 
 
-                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY);
                 mContext.startActivity(intent);
             }
         };

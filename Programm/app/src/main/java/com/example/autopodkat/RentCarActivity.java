@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,8 +35,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMapClickListener {
     private String carMark;
+    private float tariffMult;
     private Toolbar mToolbar;
     private ActionBar mActionBar;
     private GoogleMap googleMap;
@@ -99,8 +103,8 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                 if (startDate.compareTo(endDate) <0 && newCarLocation.Latitude != 420 && newCarLocation.Longitude != 420 && MainActivity.user != null)
                 {
                     CreateOrder("default",String.valueOf(MainActivity.user.UserID),String.valueOf(CarID),startDate, endDate, TimeUnit.DAYS.convert(endDate.getTime()-startDate.getTime(), TimeUnit.MILLISECONDS));
-                    Toast.makeText(RentCarActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                    MainActivity.getOrders.get_orders("select userid, carid, startdate, enddate, amounthoures from orders where UserID = " + MainActivity.user.UserID);
+
+
                 }
                 else if (newCarLocation.Longitude == 420 && newCarLocation.Latitude==420)
                 {
@@ -111,6 +115,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                     Toast.makeText(RentCarActivity.this, "start date must be earlier then end date!", Toast.LENGTH_LONG).show();
                 }
                 else if (MainActivity.user == null) Toast.makeText(RentCarActivity.this, "you need to loge in", Toast.LENGTH_LONG).show();
+                else Toast.makeText(RentCarActivity.this, "Error", Toast.LENGTH_LONG).show();
             }
         });
         Intent intent = getIntent();
@@ -119,6 +124,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
             CarID = intent.getIntExtra("carID", 1);
             carLocation = new Location(intent.getDoubleArrayExtra("Location")[0],intent.getDoubleArrayExtra("Location")[1]);
             carMark = intent.getStringExtra("carMark");
+            tariffMult = intent.getFloatExtra("carTariff",1);
         }
         else CarID = 1;
 
@@ -206,8 +212,10 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                     @Override
                     public void onResponse(String response)
                     {
-                        Log.e("Response", response);
                         ChangeLocation(CarID, newCarLocation);
+                        MainActivity.getOrders.get_orders("select userid, carid, startdate, enddate, amounthoures, totalprice from orders where UserID = " + MainActivity.user.UserID);
+                        Toast.makeText(RentCarActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                 },
@@ -215,7 +223,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-
+                        Toast.makeText(RentCarActivity.this, "Error: Failed connection", Toast.LENGTH_SHORT).show();
                     }
 
                 })
@@ -231,6 +239,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                 params.put("StartDate", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
                 params.put("EndDate", new SimpleDateFormat("yyyy-MM-dd").format(endDate));;
                 params.put("AmountHoures", String.valueOf(AmountHoures));
+                params.put("TotalPrice", String.format("%.2f",AmountHoures*(3/tariffMult)));
                 return params;
             }
         };
@@ -255,7 +264,7 @@ public class RentCarActivity extends AppCompatActivity implements GoogleMap.OnMa
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-
+                        Log.e("EResponse", error.toString());
                     }
 
                 })

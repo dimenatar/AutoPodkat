@@ -7,6 +7,7 @@
         android:paddingTop="30dp">
     <TextView
             android:text="TextView"
+            android:textColor="@color/white"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_weight="0.15"
@@ -16,6 +17,7 @@
             android:id="@+id/recycler_carMark"/>
     <TextView
             android:text="TextView"
+            android:textColor="@color/white"
             android:layout_marginStart="10dp"
             android:layout_width="0dp"
             android:layout_weight="0.15"
@@ -25,6 +27,7 @@
             android:id="@+id/recycler_startDate"/>
     <TextView
             android:text="TextView"
+            android:textColor="@color/white"
             android:layout_marginStart="10dp"
             android:layout_width="0dp"
             android:layout_weight="0.15"
@@ -34,6 +37,7 @@
             android:id="@+id/recycler_endDate"/>
     <TextView
             android:text="TextView"
+            android:textColor="@color/white"
             android:layout_marginStart="10dp"
             android:layout_width="0dp"
             android:layout_weight="0.15"
@@ -43,6 +47,7 @@
             android:id="@+id/recycler_amountHours"/>
     <TextView
             android:text="123"
+            android:textColor="@color/white"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginStart="10dp"

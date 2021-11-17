@@ -14,23 +14,29 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/darker_purple"
             android:id="@+id/rlayout">
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerCarBusiness"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
+
     </RelativeLayout>
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:background="@color/dark_purple"
             android:id="@+id/rl2">
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top|center_horizontal">
             <TextView
+                    android:layout_marginTop="20dp"
                   android:layout_width="wrap_content"
+                  android:textColor="@color/white"
                   android:textSize="20sp"
                   android:layout_height="wrap_content"
                   android:id="@+id/FilterText"
@@ -45,15 +51,19 @@
                 android:paddingEnd="30dp"
                 android:orientation="horizontal">
             <Button
-                    android:layout_width="130dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/tariffIDButton"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
                     android:text="tariff"/>
             <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:id="@+id/transmissionButton"
                     android:layout_marginStart="30dp"
+                    android:textAlignment="center"
                     android:text="transmission"
             />
         </LinearLayout>
@@ -64,26 +74,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/white"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1"
-                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintVertical_bias="0.95"
+                        app:layout_constraintHorizontal_bias="0.5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/ClearFilters"
                         android:text="Clear"
                         android:layout_gravity="bottom|start"/>
-                <Button
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1"
-                        app:layout_constraintHorizontal_bias="0.9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/ApllyButton"
-                        android:layout_gravity="bottom|end"
-                        android:text="Apply"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

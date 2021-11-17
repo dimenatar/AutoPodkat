@@ -3,6 +3,8 @@ package com.example.autopodkat.ui.home;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,12 +38,11 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
     public static String transmissionQuery="";
     public static IShowDialog showDialog;
     MyRecyclerViewAdapter carAdapter;
-    private List<String> choices = new ArrayList<>();
-    private List<String> filters = new ArrayList<>();
+    Button clearButton;
     private boolean isTariff = false;
     private boolean isTransmission = false;
     private Tariffs tariffs;
-    private String baseRequest = "select cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
+    private String baseRequest = "select cars.carid, cars.carmark, cars.carmodel, cars.descr, cars.bodytype, cars.transmissiontype, cars.photo, cars.hp, cars.volume, tariffs.tariffname, locations.longitude, locations.latitude from cars inner join tariffs on cars.tariffID=tariffs.tariffID inner join locations on cars.locationID=locations.locationID";
 
     private HomeViewModel homeViewModel;
 
@@ -58,7 +60,19 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
                 ShowDialog(items, button);
             }
         };
-        Log.e("created","123");
+        clearButton = root.findViewById(R.id.ClearFilters);
+        clearButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (isTariff || isTransmission)
+                {
+                    isTransmission = false; isTariff = false;
+                    MainActivity.get.get(MainActivity.carList, baseRequest);
+                }
+            }
+        });
         return root;
     }
     void FillAdapter(Context context, List<Car> carList, View view)
@@ -76,15 +90,14 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
 
     public void ShowDialog(String[] items, int button)
     {
-        choices = new ArrayList<>();
-        filters = new ArrayList<>();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alert = alertDialog.create();
-        alertDialog.setTitle("choose tariff");
+
         switch (button)
         {
             case 1:
             {
+                alertDialog.setTitle("choose tariff");
                 alertDialog.setSingleChoiceItems(items, tariffChecked, new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -144,6 +157,7 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
             }
             case 2:
             {
+                alertDialog.setTitle("choose transmission");
                 alertDialog.setSingleChoiceItems(items, transmissionChecked, new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -196,7 +210,7 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
         if (isTariff && isTransmission)
         {
             Log.e("tran","tr");
-            query = baseRequest + " where tariffs.tariffID="+ (Tariffs.valueOf(tariffQuery).ordinal()+1) + " and cars.transmissiontype like'" + transmissionQuery + "'";
+            query = baseRequest + " where tariffs.tariffID="+ (Tariffs.valueOf(tariffQuery).ordinal()+1) + " and cars.transmissiontype like '" + transmissionQuery + "'";
         }
         else if (isTariff)
         {
@@ -206,12 +220,13 @@ public class HomeFragment extends Fragment implements MyRecyclerViewAdapter.Item
         else if (isTransmission)
         {
             Log.e("tr","tr");
-            query = baseRequest + " where cars.transmissiontype like'" + transmissionQuery + "'";
+            query = baseRequest + " where cars.transmissiontype like '" + transmissionQuery + "'";
         }
         else
         {
             query = baseRequest;
         }
+        Log.e("query", query);
         MainActivity.get.get(MainActivity.carList, query);
     }
 

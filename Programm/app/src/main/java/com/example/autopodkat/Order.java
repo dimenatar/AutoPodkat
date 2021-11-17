@@ -12,7 +12,7 @@ public class Order implements Serializable
     public int AmountHours;
     public float TotalPrice;
 
-    public Order(int userID, int carID, Date startDate, Date endDate, int amountHours, int totalPrice)
+    public Order(int userID, int carID, Date startDate, Date endDate, int amountHours, float totalPrice)
     {
         TotalPrice = totalPrice;
         UserID = userID;

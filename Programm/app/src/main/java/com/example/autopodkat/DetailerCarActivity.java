@@ -37,7 +37,7 @@ public class DetailerCarActivity extends AppCompatActivity
     private MapView carPosition;
     private Button takeCarButton;
     private Location carLocation;
-    private int CarID;
+    private int CarID, carTariff;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
@@ -74,6 +74,7 @@ public class DetailerCarActivity extends AppCompatActivity
             mToolbar.setTitle("123");
             mActionBar.setTitle(intent.getStringExtra("carMark") + "  " + intent.getStringExtra("carModel"));
             CarID=intent.getIntExtra("carID",1);
+            carTariff = intent.getIntExtra("carTariff", 1);
         }
         carPosition.onCreate(savedInstanceState);
         carPosition.onResume();
@@ -104,6 +105,7 @@ public class DetailerCarActivity extends AppCompatActivity
             {
                 Intent intent1 = new Intent(DetailerCarActivity.this, RentCarActivity.class);
                 intent1.putExtra("carID", CarID);
+                intent1.putExtra("carTariff", carTariff);
                 intent1.putExtra("carMark", intent.getStringExtra("carMark"));
                 intent1.putExtra("Location",new double[]{carLocation.Longitude, carLocation.Latitude});
                 intent1.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

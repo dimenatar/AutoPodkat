@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/darker_purple"
         tools:context=".ui.gallery.GalleryFragment">
     <LinearLayout
             android:layout_width="match_parent"
@@ -13,6 +14,7 @@
             app:layout_constraintVertical_bias="0.023">
         <TextView
                 android:text="Car"
+                android:textColor="@color/light_purple"
                 android:layout_marginStart="5dp"
                 android:textStyle="bold"
                 android:layout_width="0dp"
@@ -23,6 +25,7 @@
                 android:id="@+id/recycler_carMark"/>
         <TextView
                 android:text="Start ride date"
+                android:textColor="@color/light_purple"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:layout_width="0dp"
@@ -33,6 +36,7 @@
                 android:id="@+id/recycler_startDate"/>
         <TextView
                 android:text="End ride date"
+                android:textColor="@color/light_purple"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:layout_width="0dp"
@@ -43,6 +47,7 @@
                 android:id="@+id/recycler_endDate"/>
         <TextView
                 android:text="Total time"
+                android:textColor="@color/light_purple"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:layout_width="0dp"
@@ -53,6 +58,7 @@
                 android:id="@+id/recycler_amountHours"/>
         <TextView
                 android:text="Total price"
+                android:textColor="@color/light_purple"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"

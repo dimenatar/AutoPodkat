@@ -5,6 +5,7 @@
         android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
+        android:background="@color/darker_purple"
         android:layout_height="match_parent">
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:titleTextColor="@color/white"
-            android:background="@color/purple_200"/>
+            android:background="?attr/colorPrimary"/>
     <LinearLayout
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
@@ -28,6 +29,8 @@
             android:layout_marginTop="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray"
             android:maxLength="20"
             android:hint="User name"
             android:inputType="textPersonName"
@@ -43,6 +46,8 @@
                 android:maxLength="20"
                 android:inputType="textPassword"
                 android:text=""
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray"
                 android:hint="Password"
                 android:backgroundTint="@color/red"
                 android:ems="10"
@@ -52,6 +57,8 @@
             android:layout_marginTop="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray"
             android:maxLength="20"
             android:inputType="textPersonName"
             android:text=""
@@ -65,6 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLength="13"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray"
             android:inputType="phone"
             android:digits="+() 1234567890-"
             android:text="+375 "
@@ -78,6 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="60dp"
             android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:background="@color/gray"
             android:id="@+id/Confirm_reg_button"
             android:layout_height="wrap_content"/>
 

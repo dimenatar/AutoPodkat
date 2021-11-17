@@ -84,7 +84,7 @@ public class SaveManager implements Serializable
         }
         catch (ClassNotFoundException | IOException e)
         {
-            Log.e("load err", e.getMessage());
+
         }
         return listCar;
     }
