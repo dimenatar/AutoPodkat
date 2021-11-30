@@ -29,6 +29,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ActionBar mActionBar;
     private Button regButton;
+    private String orderRequest = "select userid, carid, startdate, enddate, amounthoures,totalprice from orders";
     private EditText userName, pass, telephone, passport;
     private TextWatcher mTextWatcher;
     private boolean isUserCorrect = false;
@@ -220,6 +221,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         MainActivity.user = new User(jsonObject.getInt("UserID"), userName, pass, passport, telephone);
                         SaveManager.SaveAcc(MainActivity.user, getApplicationContext());
                         MainActivity.iSetName.SetName(MainActivity.user.UserName, true);
+                        SaveManager.EraseOrders(getApplicationContext());
                         finish();
                     }
                     Toast.makeText(RegistrationActivity.this,message,Toast.LENGTH_SHORT).show();

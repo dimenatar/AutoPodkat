@@ -178,7 +178,22 @@ public class SaveManager implements Serializable
             ContextWrapper cw = new ContextWrapper(context);
             File directory = cw.getDir("saveDirectory", Context.MODE_PRIVATE);
             File file = new File(directory, "userSave.txt");
+            if (file.exists())
             file.delete();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public static void EraseOrders(Context context)
+    {
+        FileOutputStream fileOutputStream = null;
+        try {
+            ContextWrapper cw = new ContextWrapper(context);
+            File directory = cw.getDir("saveDirectory", Context.MODE_PRIVATE);
+            File file = new File(directory, "orderSave.txt");
+            if (file.exists())
+                file.delete();
         } catch (Exception e)
         {
             e.printStackTrace();

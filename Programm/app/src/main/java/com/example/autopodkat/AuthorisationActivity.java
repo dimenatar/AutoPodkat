@@ -35,6 +35,7 @@ public class AuthorisationActivity extends AppCompatActivity
     private EditText UserName, Pass;
     private Button Submit;
     private ColorStateList colorStateList;
+    private String orderRequest = "select userid, carid, startdate, enddate, amounthoures,totalprice from orders";
     private TextView regText, userNameHeader;
     // Volley Variables
     private RequestQueue mRequestQueue;
@@ -158,6 +159,7 @@ public class AuthorisationActivity extends AppCompatActivity
                         MainActivity.user = new User(jsonObject.getInt("UserID"), jsonObject.getString("UserName"),jsonObject.getString("Pass"),jsonObject.getString("Passport"),jsonObject.getString("Telephone"));
                         MainActivity.iSetName.SetName(jsonObject.getString("UserName"), true);
                         SaveManager.SaveAcc(MainActivity.user, getApplicationContext());
+                        MainActivity.getOrders.get_orders(orderRequest + " where UserID = " + MainActivity.user.UserID);
                         finish();
                     }
                     if (success.equals("0"))

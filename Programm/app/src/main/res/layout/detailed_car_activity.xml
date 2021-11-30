@@ -91,7 +91,16 @@
             android:layout_height="150dp" android:id="@+id/carPosition"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailed_car_hp"
-            app:layout_constraintBottom_toTopOf="@+id/detailed_descr"/>
+            app:layout_constraintBottom_toTopOf="@+id/detailed_descr" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.828"/>
+    <TextView
+            android:text="Current car location:"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toTopOf="@+id/carPosition"
+            app:layout_constraintTop_toBottomOf="@+id/take_car_button" app:layout_constraintVertical_bias="0.834"/>
     <Button
             android:text="take"
             android:textColor="@color/white"

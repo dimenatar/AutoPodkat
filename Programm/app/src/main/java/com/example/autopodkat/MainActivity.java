@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 {
     public static Bitmap saveBitmap;
     private TextView userNameHeader;
-    private MenuItem logMenuItem;
-    Button tariff, transmissionTypeButton;
+    Button tariff, transmissionTypeButton, accountButton;
     Context context;
     private MyRecyclerViewAdapter carAdapter;
     public static User user = null;
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_gallery)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -136,12 +135,14 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             public void SetName(String text, boolean isUser)
             {
                 if (!isUser)
-
                 {
-                    logMenuItem.setTitle("Log in");
+                    accountButton.setText("Log in");
                     Log.e("out","out");
                 }
-                else logMenuItem.setTitle("Log out");
+                else
+                {
+                    accountButton.setText("Log out");
+                }
                 userNameHeader.setText(text);
             }
         };
@@ -149,54 +150,28 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             getOrders.get_orders(orderRequest + " where UserID = " + MainActivity.user.UserID);
             Log.e("get","orders");
         }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        logMenuItem = menu.findItem(R.id.action_log);
-        if (user != null)
-        {
-            userNameHeader.setText(user.UserName);
-            logMenuItem.setTitle("Log out");
-        }
-        else
-        {
-           userNameHeader.setText("AutoPodkat");
-            logMenuItem.setTitle("Log in");
-
-        }
-        logMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-        {
+        accountButton = findViewById(R.id.accountButton);
+        accountButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item)
-            {
+            public void onClick(View v) {
                 if (user != null)
                 {
-                    if (logMenuItem == item)
-                    {
-                        //удалить инфу
-                        user = null;
-                        userNameHeader.setText("AutoPodkat");
-                        logMenuItem.setTitle("Log in");
-                        SaveManager.EraseUser(getApplicationContext());
-                    }
+                    user = null;
+                    userNameHeader.setText("AutoPodkat");
+                    accountButton.setText("Log in");
+                    SaveManager.EraseUser(getApplicationContext());
                 }
                 else
                 {
-                    if (logMenuItem == item)
-                    {
-                        Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        MainActivity.this.startActivity(intent);
-                    }
+                    Intent intent = new Intent(MainActivity.this, AuthorisationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    MainActivity.this.startActivity(intent);
+
                 }
-                return false;
             }
         });
-        return true;
     }
+
 
     @Override
     public boolean onSupportNavigateUp()
@@ -320,11 +295,13 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     {
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.RecyclerCarBusiness);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        carAdapter = new MyRecyclerViewAdapter(context, carList);
-        carAdapter.setClickListener(this);
-        recyclerView.setAdapter(carAdapter);
+        if (recyclerView != null) {
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(horizontalLayoutManager);
+            carAdapter = new MyRecyclerViewAdapter(context, carList);
+            carAdapter.setClickListener(this);
+            recyclerView.setAdapter(carAdapter);
+        }
     }
 
     @Override
